@@ -1,4 +1,4 @@
-# Learn React Native Gestures and Animations
+# React Native
 
 Materials from the declarative gestures and animations workshop for freeCodeCamp.
 
