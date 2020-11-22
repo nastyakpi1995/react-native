@@ -1,1 +1,1 @@
-export { default } from "./Onboarding";
+export { default, asserts } from "./Onboarding";

@@ -2,8 +2,14 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { ThemeProvider } from '@shopify/restyle';
 import { LoadAssets, Theme } from "./src/components";
-import { Onboarding, Welcome } from "./src/Authentication";
+import {
+    Onboarding,
+    Welcome,
+    assets as authenticationAssets
+} from "./src/Authentication";
 import { Routes } from "./src/components/Navigations";
+
+const assets = [...authenticationAssets]
 
 const fonts = {
   "SFProText-Bold": require("./assets/fonts/SF-Pro-Text-Bold.otf"),

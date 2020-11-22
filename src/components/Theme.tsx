@@ -7,8 +7,8 @@ const theme: BaseTheme = {
         title: "#0C0D34",
         text: "rgba(12, 13, 52, 0.7)",
         white: "#fff",
-        gray: "rgba(12, 13, 52, 0.05)",
-        fs: "red"
+        button: "#0C0D34",
+        grey: "rgba(12, 13, 52, 0.05)",
     },
     spacing: {
         s: 8,
@@ -64,6 +64,6 @@ const theme: BaseTheme = {
 
 export type Theme = typeof theme;
 
-export const Text = createText<Theme>();
 export const Box = createBox<Theme>();
+export const Text = createText<Theme>();
 export default theme;

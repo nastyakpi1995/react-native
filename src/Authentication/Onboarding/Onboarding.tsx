@@ -75,6 +75,8 @@ const slides = [
     },
 ];
 
+export const asserts = slides.map(slide => slide.picture.src)
+
 const Onboarding = ({ navigation }: StackNavigationProps<Routes, "Onboarding">) => {
     const { scrollHandler, x } = useScrollHandler();
     const scroll = useRef<Animated.ScrollView>(null)
@@ -144,7 +146,7 @@ const Onboarding = ({ navigation }: StackNavigationProps<Routes, "Onboarding">) 
                                     onPress={() => {
                                         if (last) {
                                             navigation.navigate("Welcome")
-                                        } else if (scroll.current) {
+                                        } else {
                                             scroll.current?.getNode().scrollTo({ x: width * (index + 1), animated: true} )
                                         }
                                     }}
