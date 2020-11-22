@@ -1,8 +1,8 @@
 import React, {useRef} from "react";
-import { View, Dimensions, StyleSheet } from "react-native";
+import {View, Dimensions, StyleSheet, Image} from "react-native";
 // @ts-ignore
 import { interpolateColor, useScrollHandler } from "react-native-redash";
-import Animated, {divide, multiply} from "react-native-reanimated";
+import Animated, { divide, Extrapolate, multiply, interpolate } from "react-native-reanimated";
 
 import Subslide from './Subslide'
 import Slide, { SLIDE_HEIGHT, BORDER_RADIUS } from "./Slide";
@@ -33,6 +33,16 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center"
+    },
+    underlay: {
+        ...StyleSheet.absoluteFillObject,
+        justifyContent: "flex-end"
+    },
+    picture: {
+        ...StyleSheet.absoluteFillObject,
+        width: undefined,
+        height: undefined,
+        borderBottomRightRadius: BORDER_RADIUS
     }
 });
 
@@ -74,6 +84,23 @@ const Onboarding = () => {
     return (
         <View style={styles.container}>
             <Animated.View style={[styles.slider, { backgroundColor }]}>
+                {slides.map(({ picture }, index) => {
+                    const opacity = interpolate(x, {
+                        inputRange: [
+                            (index - 0.5) * width,
+                            index * width,
+                            (index + 0.5) * width],
+                        outputRange: [0, 1, 0],
+                        extrapolate: Extrapolate.CLAMP
+                    });
+
+                    return (
+                    <Animated.View key={index} style={[styles.underlay, { opacity }]}>
+                        <Image source={picture} style={styles.picture} />
+                    </Animated.View>
+                ) })
+
+                }
                 <Animated.ScrollView horizontal
                                      ref={scroll}
                     showsHorizontalScrollIndicator={false}
