@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import LoadAssets from "./src/components/LoadAssets";
+import { ThemeProvider } from '@shopify/restyle';
+import { LoadAssets, Theme } from "./src/components";
 import { Onboarding } from "./src/Authentication";
 
 const fonts = {
@@ -19,9 +20,11 @@ const AuthenticationNavigator = () => {
     )
 }
 const App = () => (
-  <LoadAssets {...{ fonts }}>
-    <AuthenticationNavigator />
-  </LoadAssets>
+    <ThemeProvider theme={Theme}>
+        <LoadAssets {...{ fonts }}>
+            <AuthenticationNavigator />
+        </LoadAssets>
+    </ThemeProvider>
 );
 
 export default App;

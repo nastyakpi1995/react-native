@@ -1,14 +1,14 @@
-import React from "react";
+import React, {useRef} from "react";
 import { View, Dimensions, StyleSheet } from "react-native";
-import { interpolateColor, onScrollEvent, useValue } from "react-native-redash";
-import Animated, {multiply} from "react-native-reanimated";
+// @ts-ignore
+import { interpolateColor, useScrollHandler } from "react-native-redash";
+import Animated, {divide, multiply} from "react-native-reanimated";
 
 import Subslide from './Subslide'
-import Slide, { SLIDE_HEIGHT } from "./Slide";
+import Slide, { SLIDE_HEIGHT, BORDER_RADIUS } from "./Slide";
+import Dot from "./Dot";
 
 const { width } = Dimensions.get("window");
-
-const BORDER_RADIUS = 75;
 
 const styles = StyleSheet.create({
     container: {
@@ -23,37 +23,48 @@ const styles = StyleSheet.create({
         flex: 1
     },
     footerContent: {
-        flexDirection: "row",
+        flex: 1,
         backgroundColor: "white",
-        borderTopLeftRadius: BORDER_RADIUS
+        borderTopLeftRadius: BORDER_RADIUS,
+    },
+    pagination: {
+        ...StyleSheet.absoluteFillObject,
+        height: BORDER_RADIUS,
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center"
     }
 });
 
 const slides = [
     { label: "Relaxed",
         color: "#BFEAF5",
+        picture: require("../../../assets/cards/1.jpg"),
         subTitle: 'Lorem Ipsum is simply',
-        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.ambled '},
+        description: 'Lorem Ipsum is simply of the printing and typesetting industry.ambled '},
     { label: "Playful",
         color: "#BEECC4",
+        picture: require("../../../assets/cards/2.jpg"),
         subTitle: "It has survived not only five centuries",
-        description: "essentially unchanged. It sheets containing Lorelike Aldus PageMaker including"
+        description: "essentially unchanged. It sheets Lorelike Aldus PageMaker including"
     },
     { label: "Excentric",
         color: "#FFE4D9",
+        picture: require("../../../assets/cards/3.jpg"),
         subTitle: "It has survived not only",
-        description: "essentially unchanged. It was popularised in the 1960s with the release of  PageMaker including"
+        description: "essentially unchanged. It was 1960s with the release of  PageMaker including"
     },
     { label: "Funky",
         color: "#FFDDDD",
-        subTitle: "It has survived not ",
-        description: "essentially unchanged. It was popularised in the 1960s with the release of Letraset publishing software like Aldus PageMaker including"
+        picture: require("../../../assets/cards/4.jpg"),
+        subTitle: "It has survived not",
+        description: "essentially unchanged. It was popularised in the 1960s with the release"
     },
 ];
 
 const Onboarding = () => {
-    const x = useValue(0);
-    const onScroll = onScrollEvent({ x })
+    const { scrollHandler, x } = useScrollHandler();
+    const scroll = useRef<Animated.ScrollView>(null)
 
     const backgroundColor = interpolateColor(x, {
         inputRange: slides.map((_, i) => i * width),
@@ -64,15 +75,15 @@ const Onboarding = () => {
         <View style={styles.container}>
             <Animated.View style={[styles.slider, { backgroundColor }]}>
                 <Animated.ScrollView horizontal
+                                     ref={scroll}
                     showsHorizontalScrollIndicator={false}
                     bounces={false}
                     decelerationRate="fast"
-                    scrollEventThrottle={1}
                     snapToInterval={width}
-                    {...onScroll}
+                    {...scrollHandler}
                 >
-                    {slides.map(({label }, index) => (
-                        <Slide key={index} label={label} right={!!(index % 2)} />
+                    {slides.map(({ label, picture }, index) => (
+                        <Slide key={index} {...{label, picture }} right={!!(index % 2)} />
                     ))}
                 </Animated.ScrollView>
             </Animated.View>
@@ -81,17 +92,32 @@ const Onboarding = () => {
                     style={{  ...StyleSheet.absoluteFillObject, backgroundColor }}
                 />
 
-                <Animated.View
-                    style={[
-                    styles.footerContent,
-                    { width: width * slides.length, flex: 1, transform: [{ translateX: multiply(x, -1) }] }]}>
+                <View style={[styles.footerContent]}>
+                     <View style={styles.pagination}>
+                         {slides.map((_, index) => (
+                             <Dot key={index} currentIndex={divide(x, width)} { ...{ index, x }} />
+                         ))}
+                     </View>
+                    <Animated.View style={{
+                        flex: 1,
+                        flexDirection: "row",
+                        width: width * slides.length,
+                        transform: [{ translateX: multiply(x, -1) }]
+                    }}>
                         {slides.map(({ subTitle, description }, index) => (
                             <Subslide
                                 key={index}
                                 last={index === slides.length - 1}
+                                onPress={() => {
+                                    if (scroll.current) {
+                                        scroll.current.getNode().scrollTo({ x: width * (index + 1), animated: true} )
+                                    }
+                                }}
                                 {...{ subTitle, description }}
                             />))}
-                </Animated.View>
+                    </Animated.View>
+
+                </View>
             </View>
         </View>
     );
