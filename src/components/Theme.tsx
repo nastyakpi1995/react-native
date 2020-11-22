@@ -4,10 +4,9 @@ import { Theme } from "./index";
 const theme: BaseTheme = {
     colors: {
         primary: "#2CB9B0",
-        title: "#0C0D34",
+        secondary: "#0C0D34",
         text: "rgba(12, 13, 52, 0.7)",
         white: "#fff",
-        button: "#0C0D34",
         grey: "rgba(12, 13, 52, 0.05)",
     },
     spacing: {
@@ -33,13 +32,13 @@ const theme: BaseTheme = {
         title1: {
             fontSize: 28,
             fontFamily: "SFProText-Regular",
-            color: "title"
+            color: "secondary"
         },
         title2: {
             fontSize: 24,
             lineHeight: 30,
             fontFamily: "SFProText-Regular",
-            color: "title"
+            color: "secondary"
         },
         title3: {
             fontSize: 80,
@@ -51,12 +50,12 @@ const theme: BaseTheme = {
             fontSize: 16,
             lineHeight: 24,
             fontFamily: "SFProText-Regular",
-            color: "text"
+            color: "secondary"
         },
         button: {
             fontSize: 15,
             fontFamily: "SFProText-Regular",
-            color: 'text'
+            color: 'secondary'
         }
     },
     breakpoints: {}
