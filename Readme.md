@@ -17,7 +17,7 @@ $ yarn start
 ## Code Along
 
 Each example contains the full source code as well as the boilerplate files in case you want to code along with the video.
-In the transitions lessons, for instance, the code is available in `src/Transitions`. To use the boilerplate, go to `src/Transitions/index.ts` and replace
+In the transitions lessons, for instance, the code is available in `src/Transitions`. To use the boilerplate, go to `src/Transitions/index.tsx` and replace
 
 ```tsx
 export { default } from "./TransitionsFinal";

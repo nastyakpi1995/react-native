@@ -75,7 +75,7 @@ const slides = [
     },
 ];
 
-export const asserts = slides.map(slide => slide.picture.src)
+export const asserts = slides.map(slide => slide.picture)
 
 const Onboarding = ({ navigation }: StackNavigationProps<Routes, "Onboarding">) => {
     const { scrollHandler, x } = useScrollHandler();

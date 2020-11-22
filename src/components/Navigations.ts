@@ -8,7 +8,9 @@ export interface StackNavigationProps<
     navigation: StackNavigationProp<ParamList, RouteName>;
     route: RouteProp<ParamList, RouteName>
 }
+
 export type Routes = {
     Onboarding: undefined,
-    Welcome: undefined
+    Welcome: undefined,
+    Login: undefined
 }
