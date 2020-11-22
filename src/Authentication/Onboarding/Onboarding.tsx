@@ -1,5 +1,5 @@
-import React, {useRef} from "react";
-import {View, Dimensions, StyleSheet, Image} from "react-native";
+import React, { useRef } from "react";
+import { View, Dimensions, StyleSheet, Image } from "react-native";
 // @ts-ignore
 import { interpolateColor, useScrollHandler } from "react-native-redash";
 import Animated, { divide, Extrapolate, multiply, interpolate } from "react-native-reanimated";
@@ -7,6 +7,8 @@ import Animated, { divide, Extrapolate, multiply, interpolate } from "react-nati
 import Subslide from './Subslide'
 import Slide, { SLIDE_HEIGHT, BORDER_RADIUS } from "./Slide";
 import Dot from "./Dot";
+import theme from "../../components/Theme";
+import { StackNavigationProps, Routes } from "../../components/Navigations";
 
 const { width } = Dimensions.get("window");
 
@@ -36,13 +38,14 @@ const styles = StyleSheet.create({
     },
     underlay: {
         ...StyleSheet.absoluteFillObject,
-        justifyContent: "flex-end"
+        justifyContent: "flex-end",
+        borderBottomRightRadius: theme.borderRadii.xl
     },
     picture: {
         ...StyleSheet.absoluteFillObject,
         width: undefined,
         height: undefined,
-        borderBottomRightRadius: BORDER_RADIUS
+        borderBottomRightRadius: theme.borderRadii.xl
     }
 });
 
@@ -72,7 +75,7 @@ const slides = [
     },
 ];
 
-const Onboarding = () => {
+const Onboarding = ({ navigation }: StackNavigationProps<Routes, "Onboarding">) => {
     const { scrollHandler, x } = useScrollHandler();
     const scroll = useRef<Animated.ScrollView>(null)
 
@@ -131,17 +134,23 @@ const Onboarding = () => {
                         width: width * slides.length,
                         transform: [{ translateX: multiply(x, -1) }]
                     }}>
-                        {slides.map(({ subTitle, description }, index) => (
-                            <Subslide
-                                key={index}
-                                last={index === slides.length - 1}
-                                onPress={() => {
-                                    if (scroll.current) {
-                                        scroll.current.getNode().scrollTo({ x: width * (index + 1), animated: true} )
-                                    }
-                                }}
-                                {...{ subTitle, description }}
-                            />))}
+                        {slides.map(({ subTitle, description }, index) => {
+                            const last = index === slides.length - 1;
+
+                            return (
+                                <Subslide
+                                    key={index}
+                                    last={last}
+                                    onPress={() => {
+                                        if (last) {
+                                            navigation.navigate("Welcome")
+                                        } else if (scroll.current) {
+                                            scroll.current?.getNode().scrollTo({ x: width * (index + 1), animated: true} )
+                                        }
+                                    }}
+                                    {...{ subTitle, description }}
+                                />)}
+                        )}
                     </Animated.View>
 
                 </View>
